@@ -129,6 +129,9 @@ public class ZipUtils {
 		while(z.hasMoreElements()){
 			ZipEntry entry = z.nextElement();
 			File f = new File(targetDir, entry.getName());
+			if (!f.toPath().normalize().startsWith(targetDir.toPath().normalize())) {
+				throw new IOException("Bad zip entry");
+			}
 			if(f.isDirectory()){
 				if(!f.exists()){
 					f.mkdirs();
