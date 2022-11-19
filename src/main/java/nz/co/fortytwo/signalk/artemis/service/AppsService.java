@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 
 import javax.ws.rs.CookieParam;
 import javax.ws.rs.GET;
@@ -44,6 +45,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import mjson.Json;
 import nz.co.fortytwo.signalk.artemis.util.Util;
+
 @AtmosphereService(
 		dispatch = true,
 		interceptors = {AtmosphereResourceLifecycleInterceptor.class, TrackMessageSizeInterceptor.class},
@@ -222,7 +224,7 @@ public class AppsService extends BaseApiService {
 		File download = new File(staticDir,"download");
 		download.mkdirs();
 		//download
-		File tmp = File.createTempFile(name, ".tgz", download);
+		File tmp = Files.createTempFile(download.toPath(),name,".tgz").toFile();
 		
 		try (final AsyncHttpClient client = asyncHttpClient();) {
 
